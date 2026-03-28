@@ -19,10 +19,12 @@ def main():
             resultado = executarExpressao(tokens)
             resultados.append(resultado)
 
+            assemblies = []
             asm = gerarAssembly(tokens)
+            assemblies.append(asm)
+            salvarAssembly("saida.asm", assemblies)
 
-            print("\n--- Assembly ---")
-            print(asm)
+
 
         except Exception as e:
             print("Erro:", e)

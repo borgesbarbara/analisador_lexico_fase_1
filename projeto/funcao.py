@@ -1,9 +1,7 @@
 import math
 
-######################################################
-# LEXER (ALUNO 1)
-######################################################
 
+#aluno 1
 def estadoNumero(s):
     if not s:
         return False
@@ -41,10 +39,7 @@ def parseExpressao(linha):
     return tokens
 
 
-######################################################
-# EXECUÇÃO (ALUNO 2)
-######################################################
-
+#aluno 2
 memoria = {"MEM": 0.0}
 historico = []
 
@@ -151,6 +146,9 @@ def gerarAssembly(tokens):
         r = pilha[-1]
         asm += "LDR R11, =RESULTADO\n"
         asm += f"STR {r}, [R11]\n"
+        
+    
+    
 
     return asm
 
@@ -177,3 +175,9 @@ def exibirResultados(resultados):
     print("\n===== RESULTADOS =====")
     for i, r in enumerate(resultados):
         print(f"Expr {i+1}: {r:.1f}")
+
+def salvarAssembly(nome_arquivo, lista_assembly):
+    with open(nome_arquivo, "w") as f:
+        for bloco in lista_assembly:
+            f.write(bloco)
+            f.write("\n")
