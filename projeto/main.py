@@ -1,33 +1,54 @@
+#aluna:Bárbara batista Borges
+#Grupo: grupo 21
+
 import sys
 from funcao import *
 
 def main():
     if len(sys.argv) < 2:
-        print("Uso: python main.py entrada.txt")
+        print("Uso: python main.py entrada1.txt entrada2.txt")
         return
 
-    linhas = lerArquivo(sys.argv[1])
-    if linhas is None:
-        return
+    arquivos = sys.argv[1:]
 
     resultados = []
+    tokens_gerados = []
+    assemblies = []
 
-    for linha in linhas:
-        try:
-            tokens = parseExpressao(linha)
+    for nome_arquivo in arquivos:
+        linhas = lerArquivo(nome_arquivo)
 
-            resultado = executarExpressao(tokens)
-            resultados.append(resultado)
+        if linhas is None:
+            continue
 
-            assemblies = []
-            asm = gerarAssembly(tokens)
-            assemblies.append(asm)
-            salvarAssembly("saida.asm", assemblies)
+        for linha in linhas:
+            linha = linha.strip()
 
+            if not linha:
+                continue
 
+            try:
+                tokens = parseExpressao(linha)
+                tokens_gerados.append(" ".join(tokens))
+            except Exception as e:
+                print("Erro (parse):", e)
+                continue
 
-        except Exception as e:
-            print("Erro:", e)
+            try:
+                resultado = executarExpressao(tokens)
+                resultados.append(resultado)
+            except Exception as e:
+                print("Erro (execução):", e)
+                continue
+
+            try:
+                asm = gerarAssembly(tokens)
+                assemblies.append(asm)
+            except Exception as e:
+                print("Erro (assembly):", e)
+
+    salvarAssembly("saida.asm", assemblies)
+    salvarTokens("tokens.txt", tokens_gerados)
 
     exibirResultados(resultados)
 
